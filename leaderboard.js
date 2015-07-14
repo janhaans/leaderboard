@@ -24,10 +24,19 @@ if (Meteor.isClient) {
       Playerslist.update(playerId,{$inc: {score:5}});
     },
     'click .decrement' : function() {
-     new Promise(function(resolve, reject) {
        playerId = Session.get('selectedPlayer');
        Playerslist.update(playerId, {$inc: {score: -5}});
-     });
+   },
+   'click .remove': function() {
+     playerId = Session.get('selectedPlayer');
+     Playerslist.remove(playerId);
+   }
+  });
+  Template.addPlayerForm.events({
+    'submit form': function(event) {
+      event.preventDefault();
+      var playerNameVar = event.target.playerName.value;
+      Playerslist.insert({name: playerNameVar, score: 0});
     }
   });
 }
